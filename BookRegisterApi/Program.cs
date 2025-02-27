@@ -32,20 +32,23 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseReDoc(c =>
+    {
+        c.RoutePrefix = "docs"; // URL: /docs
+        c.DocumentTitle = "My API Documentation";
+        c.SpecUrl("/swagger/v1/swagger.json"); // OpenAPI JSON
+    });
 }
-
-
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 // Enable GraphQL endpoint
 app.UseRouting();
+app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapGraphQL(); // Maps GraphQL to /graphql
 });
+
+app.MapControllers();
 
 app.Run();
